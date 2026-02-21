@@ -1,0 +1,183 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="Logicore.View.ExpensesPage"
+             Title="Fuel &amp; Expenses"
+             BackgroundColor="#0f1923">
+
+    <ContentPage.ToolbarItems>
+        <ToolbarItem Text="+ Fuel" Command="{Binding ShowFuelFormCommand}"/>
+        <ToolbarItem Text="+ Expense" Command="{Binding ShowExpenseFormCommand}"/>
+    </ContentPage.ToolbarItems>
+
+    <Grid RowDefinitions="Auto,*">
+        <Frame Grid.Row="0" IsVisible="{Binding HasError}" BackgroundColor="#3d1515"
+               BorderColor="#e74c3c" CornerRadius="0" Padding="12">
+            <Label Text="{Binding ErrorMessage}" TextColor="#e74c3c" FontSize="13"/>
+        </Frame>
+
+        <RefreshView Grid.Row="1" Command="{Binding LoadCommand}"
+                     IsRefreshing="{Binding IsBusy}" RefreshColor="#2563eb">
+            <ScrollView>
+                <VerticalStackLayout Padding="12" Spacing="8">
+
+                    <!-- Fuel Logs section -->
+                    <Label Text="⛽ Fuel Logs" TextColor="White"
+                           FontSize="16" FontAttributes="Bold" Margin="4,8,0,4"/>
+                    <CollectionView ItemsSource="{Binding FuelLogs}" EmptyView="No fuel logs yet."
+                                    HeightRequest="200">
+                        <CollectionView.ItemTemplate>
+                            <DataTemplate>
+                                <Frame BackgroundColor="#1e2d3d" CornerRadius="10"
+                                       BorderColor="#2a3f54" Padding="12" Margin="0,4">
+                                    <Grid ColumnDefinitions="*,Auto">
+                                        <VerticalStackLayout Grid.Column="0" Spacing="3">
+                                            <Label Text="{Binding VehicleName}" TextColor="White"
+                                                   FontAttributes="Bold" FontSize="14"/>
+                                            <Label Text="{Binding Liters, StringFormat='{0}L'}"
+                                                   TextColor="#8899aa" FontSize="12"/>
+                                            <Label Text="{Binding FuelDate, StringFormat='{0:dd MMM yyyy}'}"
+                                                   TextColor="#8899aa" FontSize="12"/>
+                                        </VerticalStackLayout>
+                                        <Label Grid.Column="1"
+                                               Text="{Binding Cost, StringFormat='₹{0:N0}'}"
+                                               TextColor="#e74c3c" FontAttributes="Bold"
+                                               FontSize="16" VerticalOptions="Center"/>
+                                    </Grid>
+                                </Frame>
+                            </DataTemplate>
+                        </CollectionView.ItemTemplate>
+                    </CollectionView>
+
+                    <!-- Expenses section -->
+                    <Label Text="💸 Other Expenses" TextColor="White"
+                           FontSize="16" FontAttributes="Bold" Margin="4,12,0,4"/>
+                    <CollectionView ItemsSource="{Binding Expenses}" EmptyView="No expenses yet.">
+                        <CollectionView.ItemTemplate>
+                            <DataTemplate>
+                                <Frame BackgroundColor="#1e2d3d" CornerRadius="10"
+                                       BorderColor="#2a3f54" Padding="12" Margin="0,4">
+                                    <Grid ColumnDefinitions="*,Auto">
+                                        <VerticalStackLayout Grid.Column="0" Spacing="3">
+                                            <Label Text="{Binding VehicleName}" TextColor="White"
+                                                   FontAttributes="Bold" FontSize="14"/>
+                                            <Label Text="{Binding ExpenseType}" TextColor="#2563eb" FontSize="12"/>
+                                            <Label Text="{Binding ExpenseDate, StringFormat='{0:dd MMM yyyy}'}"
+                                                   TextColor="#8899aa" FontSize="12"/>
+                                            <Label Text="{Binding Remarks}" TextColor="#8899aa" FontSize="11"/>
+                                        </VerticalStackLayout>
+                                        <Label Grid.Column="1"
+                                               Text="{Binding Amount, StringFormat='₹{0:N0}'}"
+                                               TextColor="#e74c3c" FontAttributes="Bold"
+                                               FontSize="16" VerticalOptions="Center"/>
+                                    </Grid>
+                                </Frame>
+                            </DataTemplate>
+                        </CollectionView.ItemTemplate>
+                    </CollectionView>
+                </VerticalStackLayout>
+            </ScrollView>
+        </RefreshView>
+
+        <!-- Fuel Form Modal -->
+        <Grid Grid.RowSpan="2" IsVisible="{Binding IsFuelFormVisible}" BackgroundColor="#80000000">
+            <Frame BackgroundColor="#1e2d3d" CornerRadius="20" BorderColor="#2a3f54"
+                   Padding="24" VerticalOptions="Center" Margin="16" HasShadow="True">
+                <VerticalStackLayout Spacing="12">
+                    <Label Text="⛽ Log Fuel" TextColor="White" FontSize="20" FontAttributes="Bold"/>
+
+                    <Label Text="Vehicle *" TextColor="#8899aa" FontSize="13"/>
+                    <Frame BackgroundColor="#253545" BorderColor="#2a3f54" CornerRadius="8" Padding="0">
+                        <Picker ItemsSource="{Binding AllVehicles}" ItemDisplayBinding="{Binding VehicleName}"
+                                SelectedItem="{Binding SelectedVehicleForFuel}"
+                                TextColor="White" BackgroundColor="Transparent"
+                                TitleColor="#4a5568" Title="Select Vehicle"/>
+                    </Frame>
+
+                    <Grid ColumnDefinitions="*,*" ColumnSpacing="10">
+                        <VerticalStackLayout Grid.Column="0" Spacing="6">
+                            <Label Text="Liters *" TextColor="#8899aa" FontSize="13"/>
+                            <Frame BackgroundColor="#253545" BorderColor="#2a3f54" CornerRadius="8" Padding="0" HeightRequest="46">
+                                <Entry Text="{Binding FormLiters}" Placeholder="0.0"
+                                       PlaceholderColor="#4a5568" TextColor="White"
+                                       Keyboard="Numeric" BackgroundColor="Transparent" Margin="10,0"/>
+                            </Frame>
+                        </VerticalStackLayout>
+                        <VerticalStackLayout Grid.Column="1" Spacing="6">
+                            <Label Text="Cost (₹) *" TextColor="#8899aa" FontSize="13"/>
+                            <Frame BackgroundColor="#253545" BorderColor="#2a3f54" CornerRadius="8" Padding="0" HeightRequest="46">
+                                <Entry Text="{Binding FormFuelCost}" Placeholder="0"
+                                       PlaceholderColor="#4a5568" TextColor="White"
+                                       Keyboard="Numeric" BackgroundColor="Transparent" Margin="10,0"/>
+                            </Frame>
+                        </VerticalStackLayout>
+                    </Grid>
+
+                    <Label Text="Date" TextColor="#8899aa" FontSize="13"/>
+                    <Frame BackgroundColor="#253545" BorderColor="#2a3f54" CornerRadius="8" Padding="4">
+                        <DatePicker Date="{Binding FormFuelDate}" TextColor="White" BackgroundColor="Transparent"/>
+                    </Frame>
+
+                    <Grid ColumnDefinitions="*,*" ColumnSpacing="10" Margin="0,6,0,0">
+                        <Button Grid.Column="0" Text="Cancel" Command="{Binding HideFuelFormCommand}"
+                                BackgroundColor="#253545" TextColor="White" CornerRadius="10" HeightRequest="48"/>
+                        <Button Grid.Column="1" Text="Save Fuel Log" Command="{Binding SaveFuelLogCommand}"
+                                BackgroundColor="#2563eb" TextColor="White"
+                                FontAttributes="Bold" CornerRadius="10" HeightRequest="48"/>
+                    </Grid>
+                </VerticalStackLayout>
+            </Frame>
+        </Grid>
+
+        <!-- Expense Form Modal -->
+        <Grid Grid.RowSpan="2" IsVisible="{Binding IsExpenseFormVisible}" BackgroundColor="#80000000">
+            <Frame BackgroundColor="#1e2d3d" CornerRadius="20" BorderColor="#2a3f54"
+                   Padding="24" VerticalOptions="Center" Margin="16" HasShadow="True">
+                <VerticalStackLayout Spacing="12">
+                    <Label Text="💸 Log Expense" TextColor="White" FontSize="20" FontAttributes="Bold"/>
+
+                    <Label Text="Vehicle *" TextColor="#8899aa" FontSize="13"/>
+                    <Frame BackgroundColor="#253545" BorderColor="#2a3f54" CornerRadius="8" Padding="0">
+                        <Picker ItemsSource="{Binding AllVehicles}" ItemDisplayBinding="{Binding VehicleName}"
+                                SelectedItem="{Binding SelectedVehicleForExpense}"
+                                TextColor="White" BackgroundColor="Transparent"
+                                TitleColor="#4a5568" Title="Select Vehicle"/>
+                    </Frame>
+
+                    <Label Text="Expense Type *" TextColor="#8899aa" FontSize="13"/>
+                    <Frame BackgroundColor="#253545" BorderColor="#2a3f54" CornerRadius="8" Padding="0">
+                        <Picker ItemsSource="{Binding ExpenseTypes}" SelectedItem="{Binding FormExpenseType}"
+                                TextColor="White" BackgroundColor="Transparent"/>
+                    </Frame>
+
+                    <Label Text="Amount (₹) *" TextColor="#8899aa" FontSize="13"/>
+                    <Frame BackgroundColor="#253545" BorderColor="#2a3f54" CornerRadius="8" Padding="0" HeightRequest="46">
+                        <Entry Text="{Binding FormExpenseAmount}" Placeholder="0"
+                               PlaceholderColor="#4a5568" TextColor="White"
+                               Keyboard="Numeric" BackgroundColor="Transparent" Margin="10,0"/>
+                    </Frame>
+
+                    <Label Text="Date" TextColor="#8899aa" FontSize="13"/>
+                    <Frame BackgroundColor="#253545" BorderColor="#2a3f54" CornerRadius="8" Padding="4">
+                        <DatePicker Date="{Binding FormExpenseDate}" TextColor="White" BackgroundColor="Transparent"/>
+                    </Frame>
+
+                    <Label Text="Remarks" TextColor="#8899aa" FontSize="13"/>
+                    <Frame BackgroundColor="#253545" BorderColor="#2a3f54" CornerRadius="8" Padding="4">
+                        <Entry Text="{Binding FormExpenseRemarks}" Placeholder="Optional notes"
+                               PlaceholderColor="#4a5568" TextColor="White"
+                               BackgroundColor="Transparent" Margin="10,0"/>
+                    </Frame>
+
+                    <Grid ColumnDefinitions="*,*" ColumnSpacing="10" Margin="0,6,0,0">
+                        <Button Grid.Column="0" Text="Cancel" Command="{Binding HideExpenseFormCommand}"
+                                BackgroundColor="#253545" TextColor="White" CornerRadius="10" HeightRequest="48"/>
+                        <Button Grid.Column="1" Text="Save Expense" Command="{Binding SaveExpenseCommand}"
+                                BackgroundColor="#e74c3c" TextColor="White"
+                                FontAttributes="Bold" CornerRadius="10" HeightRequest="48"/>
+                    </Grid>
+                </VerticalStackLayout>
+            </Frame>
+        </Grid>
+    </Grid>
+</ContentPage>

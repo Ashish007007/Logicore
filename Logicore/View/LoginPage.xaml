@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:vm="clr-namespace:Logicore.ViewModels"
+             x:Class="Logicore.View.LoginPage"
+             Shell.NavBarIsVisible="False"
+             BackgroundColor="#0f1923">
+
+    <Grid RowDefinitions="*,Auto,*">
+
+        <!-- Background accent -->
+        <BoxView Grid.RowSpan="3" Color="#0f1923"/>
+        <BoxView Grid.Row="0" Color="#1a2634" CornerRadius="0,0,60,60"
+                 VerticalOptions="Fill" HeightRequest="260"/>
+
+        <!-- Main card -->
+        <ScrollView Grid.Row="1" Margin="24,0">
+            <Frame BackgroundColor="#1e2d3d" CornerRadius="20" Padding="28"
+                   BorderColor="#2a3f54" HasShadow="True">
+                <VerticalStackLayout Spacing="20">
+
+                    <!-- Logo area -->
+                    <VerticalStackLayout HorizontalOptions="Center" Spacing="6">
+                        <Frame BackgroundColor="#2563eb" CornerRadius="16"
+                               WidthRequest="64" HeightRequest="64"
+                               HorizontalOptions="Center" Padding="0">
+                            <Label Text="🚚" FontSize="34" HorizontalOptions="Center"
+                                   VerticalOptions="Center"/>
+                        </Frame>
+                        <Label Text="Logicore" FontSize="28" FontAttributes="Bold"
+                               TextColor="White" HorizontalOptions="Center"/>
+                        <Label Text="Fleet &amp; Logistics Management" FontSize="13"
+                               TextColor="#8899aa" HorizontalOptions="Center"/>
+                    </VerticalStackLayout>
+
+                    <!-- Error message -->
+                    <Frame IsVisible="{Binding HasError}" BackgroundColor="#3d1515"
+                           BorderColor="#e74c3c" CornerRadius="8" Padding="12">
+                        <Label Text="{Binding ErrorMessage}" TextColor="#e74c3c"
+                               FontSize="13" HorizontalOptions="Center"/>
+                    </Frame>
+
+                    <!-- Email -->
+                    <VerticalStackLayout Spacing="6">
+                        <Label Text="Email Address" TextColor="#8899aa" FontSize="13"/>
+                        <Entry Placeholder="you@company.com"
+                                   PlaceholderColor="#4a5568"
+                                   Text="{Binding Email}"
+                                   TextColor="White"
+                                   Keyboard="Email"
+                                   BackgroundColor="Transparent"
+                                   Margin="12,0"/>
+                    </VerticalStackLayout>
+
+                    <!-- Password -->
+                    <VerticalStackLayout Spacing="6">
+                        <Label Text="Password" TextColor="#8899aa" FontSize="13"/>
+                        <Entry Placeholder="••••••••"
+                                   PlaceholderColor="#4a5568"
+                                   Text="{Binding Password}"
+                                   TextColor="White"
+                                   IsPassword="True"
+                                   BackgroundColor="Transparent"
+                                   Margin="12,0"/>
+                    </VerticalStackLayout>
+
+                    <!-- Login button -->
+                    <Button Text="{Binding IsBusy, Converter={StaticResource BusyTextConverter}, ConverterParameter='Logging in...|Sign In'}"
+                            Command="{Binding LoginCommand}"
+                            IsEnabled="{Binding IsNotBusy}"
+                            BackgroundColor="#2563eb"
+                            TextColor="White"
+                            FontAttributes="Bold"
+                            FontSize="16"
+                            CornerRadius="10"
+                            HeightRequest="52"/>
+
+                    <!-- Activity indicator -->
+                    <ActivityIndicator IsVisible="{Binding IsBusy}"
+                                       IsRunning="{Binding IsBusy}"
+                                       Color="#2563eb"
+                                       HorizontalOptions="Center"/>
+
+                    <Label Text="Logicore v1.0 · Secured Access"
+                           TextColor="#4a5568" FontSize="11"
+                           HorizontalOptions="Center"/>
+                </VerticalStackLayout>
+            </Frame>
+        </ScrollView>
+    </Grid>
+</ContentPage>

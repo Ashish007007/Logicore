@@ -4,11 +4,37 @@
     xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
     xmlns:local="clr-namespace:Logicore"
-    Title="Logicore">
+    xmlns:views="clr-namespace:Logicore.View"
+           Shell.FlyoutBehavior="Disabled"
+       BackgroundColor="#0f1923"
+       ForegroundColor="White"
+       TitleColor="White"
+       TabBarBackgroundColor="#1e2d3d"
+       TabBarForegroundColor="#2563eb"
+       TabBarUnselectedColor="#4a5568">
 
-    <ShellContent
-        Title="Home"
-        ContentTemplate="{DataTemplate local:MainPage}"
-        Route="MainPage" />
+    <!-- Login (no tabs) -->
+    <ShellContent Route="login"
+                  ContentTemplate="{DataTemplate views:LoginPage}"
+                  Shell.TabBarIsVisible="False"
+                  Shell.NavBarIsVisible="False"/>
+
+    <!-- Main tabs -->
+    <TabBar>
+        <ShellContent Title="Dashboard" Icon="home.png" Route="dashboard"
+                      ContentTemplate="{DataTemplate views:DashboardPage}"/>
+        <ShellContent Title="Vehicles" Icon="truck.png" Route="vehicles"
+                      ContentTemplate="{DataTemplate views:VehiclePage}"/>
+        <ShellContent Title="Trips" Icon="map.png" Route="trips"
+                      ContentTemplate="{DataTemplate views:TripPage}"/>
+        <ShellContent Title="Drivers" Icon="person.png" Route="drivers"
+                      ContentTemplate="{DataTemplate views:DriverPage}"/>
+        <ShellContent Title="Service" Icon="wrench.png" Route="maintenance"
+                      ContentTemplate="{DataTemplate views:MaintenancePage}"/>
+        <ShellContent Title="Expenses" Icon="wallet.png" Route="expenses"
+                      ContentTemplate="{DataTemplate views:ExpensesPage}"/>
+        <ShellContent Title="Analytics" Icon="chart.png" Route="analytics"
+                      ContentTemplate="{DataTemplate views:AnalyticsPage}"/>
+    </TabBar>
 
 </Shell>

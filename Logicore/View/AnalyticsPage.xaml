@@ -1,0 +1,143 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="Logicore.View.AnalyticsPage"
+             Title="Analytics &amp; Reports"
+             BackgroundColor="#0f1923">
+
+    <RefreshView Command="{Binding LoadCommand}"
+                 IsRefreshing="{Binding IsBusy}"
+                 RefreshColor="#2563eb">
+        <ScrollView>
+            <VerticalStackLayout Padding="16" Spacing="14">
+
+                <!-- Fleet Summary cards -->
+                <Label Text="Fleet Financial Summary" TextColor="White"
+                       FontSize="16" FontAttributes="Bold"/>
+
+                <Grid ColumnDefinitions="*,*" ColumnSpacing="12">
+                    <Frame Grid.Column="0" BackgroundColor="#163a2e" CornerRadius="14"
+                           BorderColor="#2ecc71" Padding="16">
+                        <VerticalStackLayout Spacing="4">
+                            <Label Text="Total Revenue" TextColor="#2ecc71" FontSize="12"/>
+                            <Label Text="{Binding TotalFleetRevenue, StringFormat='₹{0:N0}'}"
+                                   TextColor="White" FontSize="22" FontAttributes="Bold"/>
+                        </VerticalStackLayout>
+                    </Frame>
+                    <Frame Grid.Column="1" BackgroundColor="#3d1515" CornerRadius="14"
+                           BorderColor="#e74c3c" Padding="16">
+                        <VerticalStackLayout Spacing="4">
+                            <Label Text="Total Expenses" TextColor="#e74c3c" FontSize="12"/>
+                            <Label Text="{Binding TotalFleetExpenses, StringFormat='₹{0:N0}'}"
+                                   TextColor="White" FontSize="22" FontAttributes="Bold"/>
+                        </VerticalStackLayout>
+                    </Frame>
+                </Grid>
+
+                <Grid ColumnDefinitions="*,*" ColumnSpacing="12">
+                    <Frame Grid.Column="0" BackgroundColor="#1e2d3d" CornerRadius="14"
+                           BorderColor="#2a3f54" Padding="16">
+                        <VerticalStackLayout Spacing="4">
+                            <Label Text="Net Profit" TextColor="#8899aa" FontSize="12"/>
+                            <Label Text="{Binding NetFleetProfit, StringFormat='₹{0:N0}'}"
+                                   TextColor="{Binding NetProfitColor}"
+                                   FontSize="22" FontAttributes="Bold"/>
+                        </VerticalStackLayout>
+                    </Frame>
+                    <Frame Grid.Column="1" BackgroundColor="#1e2d3d" CornerRadius="14"
+                           BorderColor="#2a3f54" Padding="16">
+                        <VerticalStackLayout Spacing="4">
+                            <Label Text="Fleet Utilization" TextColor="#8899aa" FontSize="12"/>
+                            <Label Text="{Binding FleetUtilization, StringFormat='{0:F1}%'}"
+                                   TextColor="#3498db" FontSize="22" FontAttributes="Bold"/>
+                        </VerticalStackLayout>
+                    </Frame>
+                </Grid>
+
+                <!-- Per Vehicle Analytics -->
+                <Label Text="Vehicle ROI Breakdown" TextColor="White"
+                       FontSize="16" FontAttributes="Bold" Margin="0,8,0,0"/>
+
+                <CollectionView ItemsSource="{Binding VehicleAnalytics}"
+                                EmptyView="No data available. Add trips and expenses first.">
+                    <CollectionView.ItemTemplate>
+                        <DataTemplate>
+                            <Frame BackgroundColor="#1e2d3d" CornerRadius="14"
+                                   BorderColor="#2a3f54" Padding="16" Margin="0,6">
+                                <VerticalStackLayout Spacing="10">
+                                    <!-- Header -->
+                                    <Grid ColumnDefinitions="*,Auto">
+                                        <VerticalStackLayout Grid.Column="0">
+                                            <Label Text="{Binding VehicleName}" TextColor="White"
+                                                   FontAttributes="Bold" FontSize="16"/>
+                                            <Label Text="{Binding LicensePlate}" TextColor="#8899aa" FontSize="12"/>
+                                        </VerticalStackLayout>
+                                        <Frame Grid.Column="1" CornerRadius="8" Padding="10,6" VerticalOptions="Start"
+                                               BackgroundColor="#253545" BorderColor="#2a3f54">
+                                            <Label Text="{Binding ROI, StringFormat='ROI: {0}%'}"
+                                                   TextColor="{Binding ROIColor}"
+                                                   FontAttributes="Bold" FontSize="13"/>
+                                        </Frame>
+                                    </Grid>
+
+                                    <!-- Divider -->
+                                    <BoxView HeightRequest="1" Color="#2a3f54"/>
+
+                                    <!-- Metrics grid -->
+                                    <Grid ColumnDefinitions="*,*,*" RowDefinitions="Auto,Auto">
+                                        <VerticalStackLayout Grid.Row="0" Grid.Column="0" Spacing="2">
+                                            <Label Text="Revenue" TextColor="#8899aa" FontSize="11"/>
+                                            <Label Text="{Binding TotalRevenue, StringFormat='₹{0:N0}'}"
+                                                   TextColor="#2ecc71" FontSize="14" FontAttributes="Bold"/>
+                                        </VerticalStackLayout>
+                                        <VerticalStackLayout Grid.Row="0" Grid.Column="1" Spacing="2">
+                                            <Label Text="Op. Cost" TextColor="#8899aa" FontSize="11"/>
+                                            <Label Text="{Binding TotalOperationalCost, StringFormat='₹{0:N0}'}"
+                                                   TextColor="#e74c3c" FontSize="14" FontAttributes="Bold"/>
+                                        </VerticalStackLayout>
+                                        <VerticalStackLayout Grid.Row="0" Grid.Column="2" Spacing="2">
+                                            <Label Text="Net Profit" TextColor="#8899aa" FontSize="11"/>
+                                            <Label Text="{Binding NetProfit, StringFormat='₹{0:N0}'}"
+                                                   TextColor="{Binding ProfitColor}"
+                                                   FontSize="14" FontAttributes="Bold"/>
+                                        </VerticalStackLayout>
+
+                                        <VerticalStackLayout Grid.Row="1" Grid.Column="0" Spacing="2" Margin="0,8,0,0">
+                                            <Label Text="Fuel Efficiency" TextColor="#8899aa" FontSize="11"/>
+                                            <Label Text="{Binding FuelEfficiency, StringFormat='{0} km/L'}"
+                                                   TextColor="#3498db" FontSize="13"/>
+                                        </VerticalStackLayout>
+                                        <VerticalStackLayout Grid.Row="1" Grid.Column="1" Spacing="2" Margin="0,8,0,0">
+                                            <Label Text="Cost/km" TextColor="#8899aa" FontSize="11"/>
+                                            <Label Text="{Binding CostPerKm, StringFormat='₹{0}'}"
+                                                   TextColor="#f39c12" FontSize="13"/>
+                                        </VerticalStackLayout>
+                                        <VerticalStackLayout Grid.Row="1" Grid.Column="2" Spacing="2" Margin="0,8,0,0">
+                                            <Label Text="Distance" TextColor="#8899aa" FontSize="11"/>
+                                            <Label Text="{Binding TotalDistanceKm, StringFormat='{0:N0} km'}"
+                                                   TextColor="White" FontSize="13"/>
+                                        </VerticalStackLayout>
+                                    </Grid>
+                                </VerticalStackLayout>
+                            </Frame>
+                        </DataTemplate>
+                    </CollectionView.ItemTemplate>
+                </CollectionView>
+
+                <!-- Average ROI -->
+                <Frame BackgroundColor="#1a2034" CornerRadius="14"
+                       BorderColor="#2563eb" Padding="16">
+                    <VerticalStackLayout Spacing="4">
+                        <Label Text="Fleet Average ROI" TextColor="#8899aa" FontSize="13"/>
+                        <Label Text="{Binding AverageROI, StringFormat='{0:F2}%'}"
+                               TextColor="#2563eb" FontSize="32" FontAttributes="Bold"/>
+                        <Label Text="Revenue - (Maintenance + Fuel) / Acquisition Cost"
+                               TextColor="#4a5568" FontSize="11"/>
+                    </VerticalStackLayout>
+                </Frame>
+
+                <BoxView HeightRequest="30" Color="Transparent"/>
+            </VerticalStackLayout>
+        </ScrollView>
+    </RefreshView>
+</ContentPage>

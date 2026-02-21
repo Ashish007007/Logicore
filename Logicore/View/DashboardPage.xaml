@@ -1,0 +1,175 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="Logicore.View.DashboardPage"
+             Title="Command Center"
+             BackgroundColor="#0f1923">
+
+    <Shell.TitleView>
+        <Grid ColumnDefinitions="*,Auto">
+            <Label Text="⚡ Command Center" TextColor="White"
+                   FontSize="18" FontAttributes="Bold" VerticalOptions="Center"/>
+            <Button Grid.Column="1" Text="Logout" Command="{Binding LogoutCommand}"
+                    BackgroundColor="Transparent" TextColor="#e74c3c" FontSize="13"/>
+        </Grid>
+    </Shell.TitleView>
+
+    <RefreshView Command="{Binding RefreshCommand}"
+                 IsRefreshing="{Binding IsBusy}"
+                 RefreshColor="#2563eb">
+        <ScrollView>
+            <VerticalStackLayout Padding="16" Spacing="16">
+
+                <!-- Welcome -->
+                <Label Text="{Binding UserName, StringFormat='Welcome back, {0} 👋'}"
+                       TextColor="#8899aa" FontSize="14"/>
+
+                <!-- Error Banner -->
+                <Frame IsVisible="{Binding HasError}" BackgroundColor="#3d1515"
+                       BorderColor="#e74c3c" CornerRadius="8" Padding="12">
+                    <Label Text="{Binding ErrorMessage}" TextColor="#e74c3c" FontSize="13"/>
+                </Frame>
+
+                <!-- KPI Cards Row 1 -->
+                <Grid ColumnDefinitions="*,*" ColumnSpacing="12">
+                    <!-- Active Fleet -->
+                    <Frame Grid.Column="0" BackgroundColor="#1e2d3d" CornerRadius="14"
+                           BorderColor="#2a3f54" Padding="16">
+                        <VerticalStackLayout Spacing="4">
+                            <Label Text="🚚" FontSize="24"/>
+                            <Label Text="{Binding Stats.ActiveFleet}" TextColor="White"
+                                   FontSize="28" FontAttributes="Bold"/>
+                            <Label Text="Active Fleet" TextColor="#8899aa" FontSize="12"/>
+                        </VerticalStackLayout>
+                    </Frame>
+                    <!-- Maintenance Alerts -->
+                    <Frame Grid.Column="1" BackgroundColor="#1e2d3d" CornerRadius="14"
+                           BorderColor="#2a3f54" Padding="16">
+                        <VerticalStackLayout Spacing="4">
+                            <Label Text="🔧" FontSize="24"/>
+                            <Label Text="{Binding Stats.MaintenanceAlerts}" TextColor="#f39c12"
+                                   FontSize="28" FontAttributes="Bold"/>
+                            <Label Text="In Shop" TextColor="#8899aa" FontSize="12"/>
+                        </VerticalStackLayout>
+                    </Frame>
+                </Grid>
+
+                <!-- KPI Cards Row 2 -->
+                <Grid ColumnDefinitions="*,*" ColumnSpacing="12">
+                    <!-- Utilization -->
+                    <Frame Grid.Column="0" BackgroundColor="#1e2d3d" CornerRadius="14"
+                           BorderColor="#2a3f54" Padding="16">
+                        <VerticalStackLayout Spacing="4">
+                            <Label Text="📊" FontSize="24"/>
+                            <Label Text="{Binding Stats.UtilizationRate, StringFormat='{0:F0}%'}"
+                                   TextColor="#2ecc71" FontSize="28" FontAttributes="Bold"/>
+                            <Label Text="Utilization" TextColor="#8899aa" FontSize="12"/>
+                        </VerticalStackLayout>
+                    </Frame>
+                    <!-- Pending Cargo -->
+                    <Frame Grid.Column="1" BackgroundColor="#1e2d3d" CornerRadius="14"
+                           BorderColor="#2a3f54" Padding="16">
+                        <VerticalStackLayout Spacing="4">
+                            <Label Text="📦" FontSize="24"/>
+                            <Label Text="{Binding Stats.PendingCargo}" TextColor="#3498db"
+                                   FontSize="28" FontAttributes="Bold"/>
+                            <Label Text="Pending Cargo" TextColor="#8899aa" FontSize="12"/>
+                        </VerticalStackLayout>
+                    </Frame>
+                </Grid>
+
+                <!-- Revenue/Expense Row -->
+                <Grid ColumnDefinitions="*,*" ColumnSpacing="12">
+                    <Frame Grid.Column="0" BackgroundColor="#1e2d3d" CornerRadius="14"
+                           BorderColor="#2a3f54" Padding="16">
+                        <VerticalStackLayout Spacing="4">
+                            <Label Text="💰" FontSize="20"/>
+                            <Label Text="{Binding Stats.TotalRevenue, StringFormat='₹{0:N0}'}"
+                                   TextColor="#2ecc71" FontSize="18" FontAttributes="Bold"/>
+                            <Label Text="Total Revenue" TextColor="#8899aa" FontSize="11"/>
+                        </VerticalStackLayout>
+                    </Frame>
+                    <Frame Grid.Column="1" BackgroundColor="#1e2d3d" CornerRadius="14"
+                           BorderColor="#2a3f54" Padding="16">
+                        <VerticalStackLayout Spacing="4">
+                            <Label Text="💸" FontSize="20"/>
+                            <Label Text="{Binding Stats.TotalExpenses, StringFormat='₹{0:N0}'}"
+                                   TextColor="#e74c3c" FontSize="18" FontAttributes="Bold"/>
+                            <Label Text="Total Expenses" TextColor="#8899aa" FontSize="11"/>
+                        </VerticalStackLayout>
+                    </Frame>
+                </Grid>
+
+                <!-- Quick Nav -->
+                <Label Text="Quick Access" TextColor="White"
+                       FontSize="16" FontAttributes="Bold" Margin="0,8,0,0"/>
+
+                <Grid ColumnDefinitions="*,*,*" RowDefinitions="Auto,Auto"
+                      RowSpacing="10" ColumnSpacing="10">
+                    <Button Grid.Row="0" Grid.Column="0" Text="🚛 Vehicles"
+                            Command="{Binding NavigateVehiclesCommand}"
+                            BackgroundColor="#1e2d3d" TextColor="White"
+                            FontSize="12" CornerRadius="10" HeightRequest="60"/>
+                    <Button Grid.Row="0" Grid.Column="1" Text="🗺️ Trips"
+                            Command="{Binding NavigateTripsCommand}"
+                            BackgroundColor="#1e2d3d" TextColor="White"
+                            FontSize="12" CornerRadius="10" HeightRequest="60"/>
+                    <Button Grid.Row="0" Grid.Column="2" Text="👤 Drivers"
+                            Command="{Binding NavigateDriversCommand}"
+                            BackgroundColor="#1e2d3d" TextColor="White"
+                            FontSize="12" CornerRadius="10" HeightRequest="60"/>
+                    <Button Grid.Row="1" Grid.Column="0" Text="🔧 Service"
+                            Command="{Binding NavigateMaintenanceCommand}"
+                            BackgroundColor="#1e2d3d" TextColor="White"
+                            FontSize="12" CornerRadius="10" HeightRequest="60"/>
+                    <Button Grid.Row="1" Grid.Column="1" Text="⛽ Expenses"
+                            Command="{Binding NavigateExpensesCommand}"
+                            BackgroundColor="#1e2d3d" TextColor="White"
+                            FontSize="12" CornerRadius="10" HeightRequest="60"/>
+                    <Button Grid.Row="1" Grid.Column="2" Text="📈 Analytics"
+                            Command="{Binding NavigateAnalyticsCommand}"
+                            BackgroundColor="#1e2d3d" TextColor="White"
+                            FontSize="12" CornerRadius="10" HeightRequest="60"/>
+                </Grid>
+
+                <!-- Recent Active Trips -->
+                <Label Text="Active Trips" TextColor="White"
+                       FontSize="16" FontAttributes="Bold" Margin="0,8,0,0"/>
+
+                <CollectionView ItemsSource="{Binding RecentTrips}"
+                                EmptyView="No active trips">
+                    <CollectionView.ItemTemplate>
+                        <DataTemplate>
+                            <Frame BackgroundColor="#1e2d3d" CornerRadius="10"
+                                   BorderColor="#2a3f54" Padding="14" Margin="0,4">
+                                <Grid ColumnDefinitions="*,Auto">
+                                    <VerticalStackLayout Grid.Column="0" Spacing="3">
+                                        <Label Text="{Binding VehicleName}" TextColor="White"
+                                               FontAttributes="Bold" FontSize="14"/>
+                                        <Label Text="{Binding DriverName}" TextColor="#8899aa"
+                                               FontSize="12"/>
+                                        <Label TextColor="#8899aa" FontSize="12">
+                                            <Label.Text>
+                                                <MultiBinding StringFormat="{}{0} → {1}">
+                                                    <Binding Path="Origin"/>
+                                                    <Binding Path="Destination"/>
+                                                </MultiBinding>
+                                            </Label.Text>
+                                        </Label>
+                                    </VerticalStackLayout>
+                                    <Frame Grid.Column="1" BackgroundColor="#163a2e"
+                                           BorderColor="#2ecc71" CornerRadius="6"
+                                           Padding="8,4" VerticalOptions="Center">
+                                        <Label Text="{Binding Status}" TextColor="#2ecc71"
+                                               FontSize="11"/>
+                                    </Frame>
+                                </Grid>
+                            </Frame>
+                        </DataTemplate>
+                    </CollectionView.ItemTemplate>
+                </CollectionView>
+
+            </VerticalStackLayout>
+        </ScrollView>
+    </RefreshView>
+</ContentPage>
