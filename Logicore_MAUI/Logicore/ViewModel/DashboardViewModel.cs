@@ -7,14 +7,14 @@ namespace Logicore.ViewModels
     public class DashboardViewModel : BaseViewModel
     {
         private readonly ApiService _api;
-        private DashboardStats _stats = new();
+       // private DashboardStats _stats = new();
         private string _userName = string.Empty;
 
-        public DashboardStats Stats
-        {
-            get => _stats;
-            set { SetProperty(ref _stats, value); }
-        }
+        //public DashboardStats Stats
+        //{
+        //    get => _stats;
+        //    set { SetProperty(ref _stats, value); }
+        //}
 
         public string UserName
         {
@@ -54,17 +54,17 @@ namespace Logicore.ViewModels
             ClearError();
             try
             {
-                var statsTask = _api.GetDashboardStatsAsync();
-                var tripsTask = _api.GetTripsAsync("Dispatched");
-                await Task.WhenAll(statsTask, tripsTask);
+                //var statsTask = _api.GetDashboardStatsAsync();
+                //var tripsTask = _api.GetTripsAsync("Dispatched");
+                //await Task.WhenAll(statsTask, tripsTask);
 
-                if (statsTask.Result.Success && statsTask.Result.Data != null)
-                    Stats = statsTask.Result.Data;
+                //if (statsTask.Result.Success && statsTask.Result.Data != null)
+                //    Stats = statsTask.Result.Data;
 
-                RecentTrips.Clear();
-                if (tripsTask.Result.Success && tripsTask.Result.Data != null)
-                    foreach (var t in tripsTask.Result.Data.Results.Take(5))
-                        RecentTrips.Add(t);
+                //RecentTrips.Clear();
+                //if (tripsTask.Result.Success && tripsTask.Result.Data != null)
+                //    foreach (var t in tripsTask.Result.Data.Results.Take(5))
+                //        RecentTrips.Add(t);
             }
             catch (Exception ex) { ErrorMessage = ex.Message; }
             finally { IsBusy = false; }
@@ -72,7 +72,7 @@ namespace Logicore.ViewModels
 
         private void DoLogout(object? _)
         {
-            _api.Logout();
+         //   _api.Logout();
             Preferences.Default.Clear();
             Shell.Current.GoToAsync("//login");
         }

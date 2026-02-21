@@ -96,8 +96,8 @@ namespace Logicore.ViewModels
                 {
                     VehicleId = FormVehicleId,
                     ServiceType = FormServiceType,
-                    ServiceDate = FormServiceDate,
-                    NextServiceDue = FormNextServiceDue,
+                    ServiceDate = FormServiceDate.ToString(),
+                    NextServiceDue = FormNextServiceDue.ToString(),
                     Cost = FormCost,
                     Remarks = FormRemarks
                 };
@@ -242,7 +242,7 @@ namespace Logicore.ViewModels
                     VehicleId = FormFuelVehicleId,
                     Liters = FormLiters,
                     Cost = FormFuelCost,
-                    FuelDate = FormFuelDate
+                    FuelDate = FormFuelDate.ToString()
                 };
                 var result = await _api.CreateFuelLogAsync(log);
                 if (result.Success) { IsFuelFormVisible = false; await LoadDataAsync(); }
@@ -267,7 +267,7 @@ namespace Logicore.ViewModels
                     VehicleId = FormExpenseVehicleId,
                     ExpenseType = FormExpenseType,
                     Amount = FormExpenseAmount,
-                    ExpenseDate = FormExpenseDate,
+                    ExpenseDate = FormExpenseDate.ToString(),
                     Remarks = FormExpenseRemarks
                 };
                 var result = await _api.CreateExpenseAsync(expense);

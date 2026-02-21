@@ -89,7 +89,7 @@ namespace Logicore.ViewModels
                     DriverName = FormDriverName,
                     LicenseNumber = FormLicenseNumber,
                     LicenseCategory = FormLicenseCategory,
-                    LicenseExpiry = FormLicenseExpiry,
+                    LicenseExpiry = FormLicenseExpiry.ToString(),
                     SafetyScore = FormSafetyScore,
                     Status = SelectedDriver?.Status ?? "Off Duty"
                 };
@@ -126,7 +126,7 @@ namespace Logicore.ViewModels
             FormDriverName = SelectedDriver.DriverName;
             FormLicenseNumber = SelectedDriver.LicenseNumber;
             FormLicenseCategory = SelectedDriver.LicenseCategory;
-            FormLicenseExpiry = SelectedDriver.LicenseExpiry;
+            FormLicenseExpiry = DateTime.Parse(SelectedDriver.LicenseExpiry);
             FormSafetyScore = SelectedDriver.SafetyScore;
             IsFormVisible = true;
         }
